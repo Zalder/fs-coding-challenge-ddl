@@ -1,28 +1,36 @@
 package com.doodle.backend.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.*;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
+@Entity
+@Table(name="message")
 public class Message {
 
-    @Column(name="id")
+    @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
+    @Column(name="id")
     private int id;
 
     @Column(name="body")
     private String body;
 
     @Column(name="sent_at")
-    private LocalDateTime sentAt;
+    private Instant sentAt;
 
     @Column(name="sender_username")
     private String senderUsername;
 
 
     public Message() {
+    }
+
+    public Message(int id, String body, Instant sentAt, String senderUsername) {
+        this.id = id;
+        this.body = body;
+        this.sentAt = sentAt;
+        this.senderUsername = senderUsername;
     }
 
     public int getId() {
@@ -42,11 +50,11 @@ public class Message {
         this.body = body;
     }
 
-    public LocalDateTime getSentAt() {
+    public Instant getSentAt() {
         return sentAt;
     }
 
-    public void setSentAt(LocalDateTime sentAt) {
+    public void setSentAt(Instant sentAt) {
         this.sentAt = sentAt;
     }
 
