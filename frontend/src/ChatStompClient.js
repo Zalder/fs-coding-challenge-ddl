@@ -1,5 +1,6 @@
 import { Client } from "@stomp/stompjs";
 import { useChatStore } from "./store/ChatStore";
+import { timestampToString } from "./utils/Datetime";
 
 const wsEndpoint = "ws://localhost:8888/ws-chat";
 
@@ -15,7 +16,9 @@ export class ChatStompClient {
 
   onConnect() {
     this.client.subscribe("/topic/newMessage", (message) => {
-      useChatStore.getState().addMessage(JSON.parse(message.body));
+      let messageJson = JSON.parse(message.body);
+      messageJson.sentAt = timestampToString(messageJson.sentAt);
+      useChatStore.getState().addMessage(messageJson);
     });
   }
 

@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from "react";
 import styled from "styled-components";
 import { StompClientContext } from "../context/StompClientContext";
 import { useChatStore } from "../store/ChatStore";
+import { timestampToString } from "../utils/Datetime";
 import ChatMessagesList from "./ChatMessagesList";
 import NewMessageForm from "./NewMessageForm";
 
@@ -22,12 +23,16 @@ export default function Chat() {
   useEffect(() => {
     (async () => {
       const res = await fetch("http://localhost:8888/api/chat/messages");
-      const data = await res.json();
+      let data = await res.json();
+
+      data = data.map((m) => ({ ...m, sentAt: timestampToString(m.sentAt) }));
 
       setMessages(data);
       chatClient.connect();
       chatClient.subscribeToNewMessages();
     })();
+
+    return () => chatClient.disconnect();
   }, [setMessages, chatClient]);
   return (
     <ChatContainer>

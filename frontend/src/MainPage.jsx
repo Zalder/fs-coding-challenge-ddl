@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import Chat from "./components/Chat";
 import UsernameSelection from "./components/UsernameSelection";
@@ -12,14 +12,25 @@ const MainSection = styled.div`
   flex-direction: column;
   gap: 1rem;
   height: 100%;
+
+  @media (max-width: 600px) {
+    padding: 1rem 1rem;
+  }
 `;
 
 export default function MainPage() {
   const selectedUsername = useChatStore((state) => state.username);
+  const setUsername = useChatStore((state) => state.setUsername);
+
+  useEffect(() => {
+    const storedUsername = localStorage.getItem("username");
+    if (storedUsername) {
+      setUsername(storedUsername);
+    }
+  }, [setUsername]);
 
   return (
     <MainSection>
-      <p>Please select a username.</p>
       <UsernameSelection />
       {selectedUsername !== "" && <Chat />}
     </MainSection>

@@ -1,14 +1,19 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import styled from "styled-components";
 import { useChatStore } from "../store/ChatStore";
 
 const MessagesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  flex-grow: 1;
+  flex: 1 1 auto;
   padding: 1rem 1rem;
   gap: 1rem;
+  overflow-y: auto;
+  height: 0px;
+
+  & > :first-child {
+    margin-top: auto;
+  }
 `;
 
 const Message = styled.div`
@@ -39,6 +44,16 @@ const MessageTimestamp = Username;
 export default function ChatMessagesList() {
   const { messages, username } = useChatStore();
 
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   const messagesList = messages.map((m) => {
     const MessageType = username === m.senderUsername ? OwnMessage : Message;
     return (
@@ -49,5 +64,10 @@ export default function ChatMessagesList() {
       </MessageType>
     );
   });
-  return <MessagesContainer>{messagesList}</MessagesContainer>;
+  return (
+    <MessagesContainer>
+      {messagesList}
+      <div ref={messagesEndRef} />
+    </MessagesContainer>
+  );
 }

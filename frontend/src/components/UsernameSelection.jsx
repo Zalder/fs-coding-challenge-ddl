@@ -6,6 +6,7 @@ const UsernameContainer = styled.div`
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  align-items: center;
 `;
 
 export default function UsernameSelection() {
@@ -15,20 +16,31 @@ export default function UsernameSelection() {
 
   const onSubmitUsername = () => {
     setUsername(curUsername);
+    localStorage.setItem("username", curUsername);
   };
 
+  const onChangeUsername = () => {
+    setUsername("");
+    localStorage.setItem("username", "");
+  };
   return selectedUsername === "" ? (
-    <UsernameContainer>
-      Username:{" "}
-      <input
-        type="text"
-        placeholder="username"
-        value={curUsername}
-        onChange={(e) => setCurUsername(e.target.value)}
-      ></input>
-      <button onClick={onSubmitUsername}>Submit</button>
-    </UsernameContainer>
+    <>
+      <p>Please select a username.</p>
+      <UsernameContainer>
+        Username:{" "}
+        <input
+          type="text"
+          placeholder="username"
+          value={curUsername}
+          onChange={(e) => setCurUsername(e.target.value)}
+        ></input>
+        <button onClick={onSubmitUsername}>Submit</button>
+      </UsernameContainer>
+    </>
   ) : (
-    <div>Your username: {selectedUsername}</div>
+    <UsernameContainer>
+      <div>Your username: {selectedUsername}</div>
+      <button onClick={onChangeUsername}>Change username</button>
+    </UsernameContainer>
   );
 }
