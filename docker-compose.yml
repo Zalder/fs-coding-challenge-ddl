@@ -27,5 +27,12 @@ services:
       MYSQL_USER: ddlChallenge
       MYSQL_PASSWORD: ddlChallenge
       MYSQL_ROOT_PASSWORD: ddlChallenge
+
+  webapp:
+    build: ./frontend
+    restart: always
+    ports:
+      - 3100:80
+
 networks:
   springapimysql-net:
