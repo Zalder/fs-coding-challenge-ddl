@@ -1,7 +1,8 @@
 package com.doodle.backend.web.controller;
 
-import com.doodle.backend.domain.Message;
+import com.doodle.backend.domain.ChatMessage;
 import com.doodle.backend.service.MessageService;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/chat")
 public class ChatRestController {
 
@@ -19,7 +21,7 @@ public class ChatRestController {
     }
 
     @GetMapping("/messages")
-    List<Message> getAllMessages() {
+    List<ChatMessage> getAllMessages() {
         return messageService.getAllMessages();
     }
 }

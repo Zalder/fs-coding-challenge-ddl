@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styled from "styled-components";
+import { StompClientContext } from "../context/StompClientContext";
+import { useChatStore } from "../store/ChatStore";
 
 const NewMessageContainer = styled.div`
   margin-top: auto;
@@ -32,10 +34,23 @@ const SendMessageButton = styled.button`
 `;
 
 export default function NewMessageForm() {
+  const [newMessage, setNewMessage] = useState("");
+  const username = useChatStore((state) => state.username);
+  const context = useContext(StompClientContext);
+  const stompClient = context.client;
+
+  const onSubmit = () => {
+    stompClient.sendMessage(username, newMessage);
+    setNewMessage("");
+  };
   return (
     <NewMessageContainer>
-      <NewMessageInput type="text" />
-      <SendMessageButton>Send</SendMessageButton>
+      <NewMessageInput
+        type="text"
+        value={newMessage}
+        onChange={(e) => setNewMessage(e.target.value)}
+      />
+      <SendMessageButton onClick={onSubmit}>Send</SendMessageButton>
     </NewMessageContainer>
   );
 }

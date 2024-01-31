@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import { useChatStore } from "../store/ChatStore";
 
 const MessagesContainer = styled.div`
   display: flex;
-  flex-direction: column-reverse;
+  flex-direction: column;
+  justify-content: flex-end;
   flex-grow: 1;
   padding: 1rem 1rem;
   gap: 1rem;
@@ -35,20 +37,17 @@ const OwnMessage = styled(Message)`
 const MessageTimestamp = Username;
 
 export default function ChatMessagesList() {
-  return (
-    <MessagesContainer>
-      <OwnMessage>
-        <Username>You</Username>
-        <MessageContent>
-          I am doing great, thank you for asking! What about you?
-        </MessageContent>
-        <MessageTimestamp>12 Mar 2018 13:43</MessageTimestamp>
-      </OwnMessage>
-      <Message>
-        <Username>Maria</Username>
-        <MessageContent>Hello Bob, how are you doing?</MessageContent>
-        <MessageTimestamp>12 Mar 2018 13:25</MessageTimestamp>
-      </Message>
-    </MessagesContainer>
-  );
+  const { messages, username } = useChatStore();
+
+  const messagesList = messages.map((m) => {
+    const MessageType = username === m.senderUsername ? OwnMessage : Message;
+    return (
+      <MessageType key={m.id}>
+        <Username>{m.senderUsername}</Username>
+        <MessageContent>{m.body}</MessageContent>
+        <MessageTimestamp>{m.sentAt}</MessageTimestamp>
+      </MessageType>
+    );
+  });
+  return <MessagesContainer>{messagesList}</MessagesContainer>;
 }

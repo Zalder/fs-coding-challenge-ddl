@@ -2,6 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import Chat from "./components/Chat";
 import UsernameSelection from "./components/UsernameSelection";
+import { useChatStore } from "./store/ChatStore";
 
 const MainSection = styled.div`
   padding: 2.5rem 5rem;
@@ -14,11 +15,13 @@ const MainSection = styled.div`
 `;
 
 export default function MainPage() {
+  const selectedUsername = useChatStore((state) => state.username);
+
   return (
     <MainSection>
       <p>Please select a username.</p>
       <UsernameSelection />
-      <Chat />
+      {selectedUsername !== "" && <Chat />}
     </MainSection>
   );
 }

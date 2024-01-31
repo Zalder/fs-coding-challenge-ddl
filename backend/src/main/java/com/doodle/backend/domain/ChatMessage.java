@@ -2,11 +2,11 @@ package com.doodle.backend.domain;
 
 import jakarta.persistence.*;
 
-import java.time.Instant;
+import java.util.Date;
 
 @Entity
 @Table(name="message")
-public class Message {
+public class ChatMessage {
 
     @Id
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -17,16 +17,16 @@ public class Message {
     private String body;
 
     @Column(name="sent_at")
-    private Instant sentAt;
+    private Date sentAt;
 
     @Column(name="sender_username")
     private String senderUsername;
 
 
-    public Message() {
+    public ChatMessage() {
     }
 
-    public Message(int id, String body, Instant sentAt, String senderUsername) {
+    public ChatMessage(int id, String body, Date sentAt, String senderUsername) {
         this.id = id;
         this.body = body;
         this.sentAt = sentAt;
@@ -50,11 +50,11 @@ public class Message {
         this.body = body;
     }
 
-    public Instant getSentAt() {
+    public Date getSentAt() {
         return sentAt;
     }
 
-    public void setSentAt(Instant sentAt) {
+    public void setSentAt(Date sentAt) {
         this.sentAt = sentAt;
     }
 

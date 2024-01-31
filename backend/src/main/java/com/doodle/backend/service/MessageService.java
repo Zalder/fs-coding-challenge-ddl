@@ -1,6 +1,6 @@
 package com.doodle.backend.service;
 
-import com.doodle.backend.domain.Message;
+import com.doodle.backend.domain.ChatMessage;
 import com.doodle.backend.repository.MessageRepository;
 import org.springframework.stereotype.Service;
 
@@ -15,7 +15,11 @@ public class MessageService {
         this.messageRepository = messageRepository;
     }
 
-    public List<Message> getAllMessages() {
+    public List<ChatMessage> getAllMessages() {
         return messageRepository.findAll();
+    }
+
+    public void addMessage(ChatMessage message) {
+        messageRepository.save(message);
     }
 }
